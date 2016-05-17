@@ -1,0 +1,26 @@
+#******************************************************************#
+#                      GA-Spider Application                       #
+#******************************************************************#
+# Google Analytics — Beacons for tracking users                    #
+# Application for tracking users through pictures and proxy links  #
+# Copyright (c) 2016 Vasilyuk Vasiliy <vasilyuk.vasiliy@gmail.com> #
+#******************************************************************#
+#                   GitHub->https://git.io/vrsil                   #
+#******************************************************************#
+
+DirectoryIndex app.php
+
+RewriteEngine On  
+RewriteCond %{SCRIPT_FILENAME} !-d  
+RewriteCond %{SCRIPT_FILENAME} !-f  
+RewriteRule .* /app.php
+
+# Cache-Control
+<IfModule mod_headers.c>
+	Header append Cache-Control "no-store, no-cache, must-revalidate"
+</IfModule>
+ 
+# Expires
+<IfModule mod_expires.c>
+	ExpiresActive On ExpiresDefault "now"
+</IfModule>
