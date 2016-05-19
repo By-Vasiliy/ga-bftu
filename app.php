@@ -41,6 +41,7 @@ ini_set('session.hash_bits_per_character', 6);
 
 
 # Configuration headers
+// header();
 header('Cache-Control: no-store, no-cache, must-revalidate');
 header('Expires: ' . date('r'));
 
@@ -52,8 +53,8 @@ if($_SERVER['REQUEST_METHOD']!='GET'){
 	die('Method Not Allowed');
 } $_POST=NULL; $_REQUEST=NULL; $r = false;
 $_GET = array_change_key_case($_GET, CASE_LOWER); // All key 
-// Session start
-session_start();
+session_start(); // Session start
+
 
 // Favicon.ico
 if($_SERVER['REQUEST_URI']=='/favicon.ico'){
@@ -70,7 +71,7 @@ if($_SERVER['REQUEST_URI']=='/favicon.ico'){
 // Tracking
 $cheak = stripos($_SERVER['REQUEST_URI'], '/t');
 if($cheak !== false && $cheak == 0){
-	if( !empty($_GET['gtid']) ) gaDataSend(); // If is set google tracking ID
+	if( !empty($_GET['gtid']) ) gaDataSend(); // If is set Google Tracking ID
 	if( !empty($_GET['go']) ){
 		$url = urlValidator($_GET['go']);
 		if($url){ header('Location: '.$url); exit();}
@@ -93,22 +94,6 @@ if(!$r){
 # Functions block
 // Validate and return image
 function checkAndPrintImgList(){
-	$imgList = array();
-	if(file_exists(IMG_CONF_JSON)){
-		$imgList = json_decode(file_get_contents(IMG_CONF_JSON), true);
-		$imgList = array_change_key_case($imgList, CASE_LOWER);
-	}
-	// end if
-	
-	
-	// check image name
-	foreach($imgList as $k => $v){
-		if(array_key_exists($k, $_GET)){
-			$img = $v; break;
-		}
-	}
-	
-	
 	// check image print type
 	$typeList=array('png','jpg','gif','svg'); // List image types
 	foreach($typeList as $v){
@@ -120,8 +105,20 @@ function checkAndPrintImgList(){
 		}
 	}
 	
-	if(isset($img)){
-		return checkAndPrintImg($img.$type);
+	
+	$imgList = array();
+	if(file_exists(IMG_CONF_JSON)){
+		$imgList = json_decode(file_get_contents(IMG_CONF_JSON), true);
+		$imgList = array_change_key_case($imgList, CASE_LOWER);
+		// check image name
+		foreach($imgList as $k => $v){
+			if(array_key_exists($k, $_GET)){
+				$img = $v; break;
+			}
+		}
+		if(isset($img)){
+			return checkAndPrintImg($img.$type);
+		}
 	}
 	return printDefaultImg($type);
 }
@@ -164,8 +161,7 @@ function httpUserLang(){
 	if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])){
 		preg_match_all('/([a-zA-Z]{2}-[a-zA-Z]{2})|([a-z]{2})/', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $lang);
 		if(isset($lang[0][0])) return $lang[0][0];
-	}
-	return false;
+	} return false;
 }
 
 
@@ -181,7 +177,6 @@ function randInt(){
 
 // Client IP
 function httpUserIp(){
-	$ip = '';
 	if(getenv('HTTP_CLIENT_IP'))
 		$ip = getenv('HTTP_CLIENT_IP');
 	elseif(getenv('HTTP_X_FORWARDED_FOR'))
@@ -194,8 +189,7 @@ function httpUserIp(){
 		$ip = getenv('HTTP_FORWARDED');
 	elseif(getenv('REMOTE_ADDR'))
 		$ip = getenv('REMOTE_ADDR');
-	else
-		$ip = false;
+	else $ip = false;
 	return $ip;
 }
 
@@ -203,25 +197,31 @@ function httpUserIp(){
 // GO / Validate url
 function urlValidator($url){
 	$url = preg_grep("/((https?|ftp):\/\/(\S*?\.\S*?))([\s)\[\]{},;\"\':<]|\.\s|$)/i", explode("\n", $url));
-	if($url) return $url[0];
-		else return false;
+	if($url) return $url[0]; else return false;
+}
+
+function gtidValidator($id){
+	$id = preg_grep("/^UA-[0-9]{1,}-[0-9]{1,}$/i", explode("\n", $id));
+	if($id) return $id[0]; else return false;
 }
 
 
 function gaDataSend(){
-	// Set GA data
 	// gtid — Google Tracking ID
-	if( empty($_GET['gtid']) ) return false;
+	if( !gtidValidator($_GET['gtid']) ) return false;
 	if( isset($_SERVER['HTTP_USER_AGENT']) ) $gAReq['ua']=$_SERVER['HTTP_USER_AGENT']; // User agent
 	if( httpUserLang() ) $gAReq['ul']=httpUserLang(); // User lang
 	if( isset($_SERVER['HTTP_REFERER']) ) $gAReq['dr']=$_SERVER['HTTP_REFERER']; // Document Referrer
 	if( httpUserIp() ) $gAReq['uip']=httpUserIp(); // User IP
 
+	
 	// Request uri
 	preg_match("/^([^?]*)?.*$/", $_SERVER['REQUEST_URI'], $uri);
 	if($uri[1] == '') $uri[1] = '/';
 	$gAReq['dp'] = trim($uri[1]); // Request uri
 	if(substr($gAReq['dp'], -1) != '/') $gAReq['dp'] .= '/';
+	
+	
 	// Use referer / request uri +@+ referer / mr — mark referer
 	if( isset($_SERVER['HTTP_REFERER'], $_GET['mr']) ){
 		if(substr($gAReq['dp'], -1) != '/') $gAReq['dp'] .= '/';
@@ -230,12 +230,16 @@ function gaDataSend(){
 		$gAReq['dp'].='(REFERER)/'.$uri;
 	}$uri == null;
 	
+	
 	// Use mark / mgo — mark go address
 	if(isset($_GET['mgo']) && urlValidator($_GET['go'])){
+		$uri = urlValidator($_GET['go']);
 		if(substr($gAReq['dp'], -1) != '/') $gAReq['dp'] .= '/';
-		$gAReq['dp'].='(GOADDRESS)/'.$uri;
+		$gAReq['dp'].='(GOADDRESS)/'.$uri; $uri == null;
 	}
 	
+	
+	// Set static GA data
 	$gAReq['v']=1; // The Protocol version. The current value is '1'.
 	$gAReq['t']='pageview'; // Hit type
 	$gAReq['ds']='web' ; // Indicates the data source of the hit.
