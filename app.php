@@ -13,17 +13,17 @@
 
 
 # Defining constants
-//define();
+// define();
 define('GA_SSL_URL', 'https://ssl.google-analytics.com/collect');
 define('SES_COOKIE', '__SID');
 define('SES_LIFETIME', 2*365*24*60*60); // 2 Year
-define('RED_URL', 'https://git.io/vrsil'); //Redirect url from bad request
+define('RED_URL', 'https://git.io/vrsil'); // Redirect url from bad request
 define('DEFAULT_PRINT_IMG_TYPE', 'png'); // or gif, or jpg
 define('IMG_CONF_JSON','img/config.json');
 
 
 # Configuration for environment
-//ini_set();
+// ini_set();
 ini_set('session.name', SES_COOKIE);
 ini_set('session.gc_maxlifetime', SES_LIFETIME);
 ini_set('session.gc_probability', 1);
@@ -51,11 +51,9 @@ if($_SERVER['REQUEST_METHOD']!='GET'){
 	header('HTTP/1.1 405 Method Not Allowed');
 	die('Method Not Allowed');
 } $_POST=NULL; $_REQUEST=NULL; $r = false;
-$_GET = array_change_key_case($_GET, CASE_LOWER); //All key 
+$_GET = array_change_key_case($_GET, CASE_LOWER); // All key 
 // Session start
 session_start();
-
-//exit(print_r($_SERVER,true));
 
 // Favicon.ico
 if($_SERVER['REQUEST_URI']=='/favicon.ico'){
@@ -86,7 +84,7 @@ if($cheak !== false && $cheak == 0){
 // If an invalid request redirects users
 if(!$r){
 	header('HTTP/1.1 301 Moved Permanently'); // Header redirect
-	header('Location: '.RED_URL); //Redirect to git repo
+	header('Location: '.RED_URL); // Redirect to git repo
 	exit();
 }
 
@@ -100,10 +98,10 @@ function checkAndPrintImgList(){
 		$imgList = json_decode(file_get_contents(IMG_CONF_JSON), true);
 		$imgList = array_change_key_case($imgList, CASE_LOWER);
 	}
-	//end if
+	// end if
 	
 	
-	//check image name
+	// check image name
 	foreach($imgList as $k => $v){
 		if(array_key_exists($k, $_GET)){
 			$img = $v; break;
@@ -111,14 +109,14 @@ function checkAndPrintImgList(){
 	}
 	
 	
-	//check image print type
-	$typeList=array('png','jpg','gif','svg'); //List image types
+	// check image print type
+	$typeList=array('png','jpg','gif','svg'); // List image types
 	foreach($typeList as $v){
 		if(array_key_exists($v, $_GET)){
 			$type = $v;
 			break;
 		} else {
-			$type = DEFAULT_PRINT_IMG_TYPE; //Default type;
+			$type = DEFAULT_PRINT_IMG_TYPE; // Default type;
 		}
 	}
 	
@@ -129,7 +127,7 @@ function checkAndPrintImgList(){
 }
 
 
-//Cheack and return images
+// Cheack and return images
 function checkAndPrintImg($path){
 	if(!file_exists($path)) printDefaultImg($ext);
 	$ext = end(explode('.', $path));
@@ -142,19 +140,19 @@ function checkAndPrintImg($path){
 }
 
 
-//Gives the user the default image, if other image not found
+// Gives the user the default image, if other image not found
 function printDefaultImg($e = DEFAULT_PRINT_IMG_TYPE){
 	if( $e == 'jpg' ){
 		header('Content-type: image/jpeg');
-		//ATTENTION! DO NOT CHANGE!
+		// ATTENTION! DO NOT CHANGE!
 		echo base64_decode('/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAABAAEDAREAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACv/EABgQAQEBAQEAAAAAAAAAAAAAAAYFBAMC/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AAPrFip6qSunSVA0bNEFlYxYrLNFGqWKkdHTYQpUqGxp2V7qC7X2a6lmzU16qNSjq07t2nvp79evoP/Z=');
 	} elseif( $e == 'gif' ){
 		header('Content-type: image/gif');
-		//ATTENTION! DO NOT CHANGE!
-		echo base64_decode('R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=');
+		// ATTENTION! DO NOT CHANGE!
+		echo base64_decode('R0lGODlhAQABAIAAAP// /wAAACwAAAAAAQABAAACAkQBADs=');
 	} else {
 		header('Content-type: image/png');
-		//ATTENTION! DO NOT CHANGE!
+		// ATTENTION! DO NOT CHANGE!
 		echo base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mNgAAIAAAUAAen63NgAAAAASUVORK5CYII=');
 	}
 	return true;
@@ -171,7 +169,7 @@ function httpUserLang(){
 }
 
 
-// Random integer value string
+// Random integer value
 function randInt(){
 	$bytes = openssl_random_pseudo_bytes(100);
   $hex = bin2hex($bytes);
@@ -186,15 +184,15 @@ function httpUserIp(){
 	$ip = '';
 	if(getenv('HTTP_CLIENT_IP'))
 		$ip = getenv('HTTP_CLIENT_IP');
-	else if(getenv('HTTP_X_FORWARDED_FOR'))
+	elseif(getenv('HTTP_X_FORWARDED_FOR'))
 		$ip = getenv('HTTP_X_FORWARDED_FOR');
-	else if(getenv('HTTP_X_FORWARDED'))
+	elseif(getenv('HTTP_X_FORWARDED'))
 		$ip = getenv('HTTP_X_FORWARDED');
-	else if(getenv('HTTP_FORWARDED_FOR'))
+	elseif(getenv('HTTP_FORWARDED_FOR'))
 		$ip = getenv('HTTP_FORWARDED_FOR');
-	else if(getenv('HTTP_FORWARDED'))
+	elseif(getenv('HTTP_FORWARDED'))
 		$ip = getenv('HTTP_FORWARDED');
-	else if(getenv('REMOTE_ADDR'))
+	elseif(getenv('REMOTE_ADDR'))
 		$ip = getenv('REMOTE_ADDR');
 	else
 		$ip = false;
@@ -212,31 +210,39 @@ function urlValidator($url){
 
 function gaDataSend(){
 	// Set GA data
+	// gtid — Google Tracking ID
 	if( empty($_GET['gtid']) ) return false;
 	if( isset($_SERVER['HTTP_USER_AGENT']) ) $gAReq['ua']=$_SERVER['HTTP_USER_AGENT']; // User agent
-	if( httpUserLang() ) $gAReq['ul']=httpUserLang(); //User lang
-	if( isset($_SERVER['HTTP_REFERER']) ) $gAReq['dr']=$_SERVER['HTTP_REFERER']; //Document Referrer
-	if( httpUserIp() ) $gAReq['uip']=httpUserIp(); //User IP
+	if( httpUserLang() ) $gAReq['ul']=httpUserLang(); // User lang
+	if( isset($_SERVER['HTTP_REFERER']) ) $gAReq['dr']=$_SERVER['HTTP_REFERER']; // Document Referrer
+	if( httpUserIp() ) $gAReq['uip']=httpUserIp(); // User IP
 
-	//Request uri
+	// Request uri
 	preg_match("/^([^?]*)?.*$/", $_SERVER['REQUEST_URI'], $uri);
 	if($uri[1] == '') $uri[1] = '/';
 	$gAReq['dp'] = trim($uri[1]); // Request uri
 	if(substr($gAReq['dp'], -1) != '/') $gAReq['dp'] .= '/';
-	// Use referer / request uri +@+ referer
-	if( isset($_SERVER['HTTP_REFERER'], $_GET['ur']) ){
+	// Use referer / request uri +@+ referer / mr — mark referer
+	if( isset($_SERVER['HTTP_REFERER'], $_GET['mr']) ){
+		if(substr($gAReq['dp'], -1) != '/') $gAReq['dp'] .= '/';
 		$uri = $_SERVER['HTTP_REFERER'];
 		$uri = str_replace(array('http://', 'https://'),'',$uri);
 		$gAReq['dp'].='(REFERER)/'.$uri;
 	}$uri == null;
-
-	$gAReq['v']=1; //The Protocol version. The current value is '1'.
-	$gAReq['t']='pageview'; //Hit type
-	$gAReq['ds']='web' ; //Indicates the data source of the hit.
-	$gAReq['qt']=700; //Transmission data delay ms
-	$gAReq['cid']=$_COOKIE[SES_COOKIE]; //Client ID
-	$gAReq['sc']='start'; //Used to control the session duration.
-	$gAReq['tid']=$_GET['gtid'];
+	
+	// Use mark / mgo — mark go address
+	if(isset($_GET['mgo']) && urlValidator($_GET['go'])){
+		if(substr($gAReq['dp'], -1) != '/') $gAReq['dp'] .= '/';
+		$gAReq['dp'].='(GOADDRESS)/'.$uri;
+	}
+	
+	$gAReq['v']=1; // The Protocol version. The current value is '1'.
+	$gAReq['t']='pageview'; // Hit type
+	$gAReq['ds']='web' ; // Indicates the data source of the hit.
+	$gAReq['qt']=700; // Transmission data delay ms
+	$gAReq['cid']=$_COOKIE[SES_COOKIE]; // Client ID
+	$gAReq['sc']='start'; // Used to control the session duration.
+	$gAReq['tid']=$_GET['gtid']; // Google Tracking ID
 	$gAReq['z']=randInt(); // Random integer / clear cache
 
 
