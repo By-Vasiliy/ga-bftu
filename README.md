@@ -1,4 +1,5 @@
-# GA–Spider — Application for tracking users through pictures and proxy links
+# GA–Spider
+(*GA–Spider — Application for tracking users through pictures and proxy links*)
 
 # Installation in Google App Engine
 Use commands in cloud shell:
