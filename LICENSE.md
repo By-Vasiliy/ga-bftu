@@ -1,4 +1,4 @@
-# The MIT License (MIT)
+# The MIT License (MIT) ![Analytics](https://ga-spider.appspot.com/t/ga-spider/license?gtid=UA-77529928-5)
 
 **Copyright (c) 2016 Vasiliy Vasilyuk \<vasilyuk.vasiliy@gmail.com\>**
 
