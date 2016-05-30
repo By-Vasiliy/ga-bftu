@@ -55,7 +55,6 @@ if($_SERVER['REQUEST_METHOD']!='GET'){
 $_GET = array_change_key_case($_GET, CASE_LOWER); // All key 
 session_start(); // Session start
 
-
 // Favicon.ico
 if($_SERVER['REQUEST_URI']=='/favicon.ico'){
 	if(file_exists('img/favicon.ico')){
@@ -71,7 +70,7 @@ if($_SERVER['REQUEST_URI']=='/favicon.ico'){
 // Tracking
 $cheak = stripos($_SERVER['REQUEST_URI'], '/t');
 if($cheak !== false && $cheak == 0){
-	if( !empty($_GET['gtid']) ) gaDataSend(); // If is set Google Tracking ID
+	if( gtidValidator($_GET['gtid']) ) gaDataSend(); // If is set Google Tracking ID
 	if( !empty($_GET['go']) ){
 		$url = urlValidator($_GET['go']);
 		if($url){ header('Location: '.$url); exit();}
@@ -244,7 +243,7 @@ function gaDataSend(){
 	$gAReq['t']='pageview'; // Hit type
 	$gAReq['ds']='web' ; // Indicates the data source of the hit.
 	$gAReq['qt']=700; // Transmission data delay ms
-	$gAReq['cid']=$_COOKIE[SES_COOKIE]; // Client ID
+	$gAReq['cid']=session_id(); // Client ID
 	$gAReq['sc']='start'; // Used to control the session duration.
 	$gAReq['tid']=$_GET['gtid']; // Google Tracking ID
 	$gAReq['z']=randInt(); // Random integer / clear cache
