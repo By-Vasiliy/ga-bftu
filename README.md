@@ -1,4 +1,4 @@
-# GA–Spider ![Analytics](https://ga-spider.appspot.com/t/ga-spider/readme?gtid=UA-77529928-5)
+# GA–Spider ![](https://ga-spi.appspot.com/t/ga-spider/readme?gtid=UA-77529928-5)
 (*GA–Spider — Application for tracking users through pictures and proxy links*)
 
 # Installation in Google App Engine
@@ -10,11 +10,11 @@ appcfg.py -A Your_App_Name update .
 ```
 
 # Using
-First, log in to your Google Analytics account and [set up a new property](https://ga-spider.appspot.com/t/ga-spider/readme?gtid=UA-77529928-5&mr&mgo&go=https://support.google.com/analytics/answer/1042508?hl=en):
+First, log in to your Google Analytics account and [set up a new property](https://ga-spi.appspot.com/t/ga-spider/readme?gtid=UA-77529928-5&mr&mgo&go=https://support.google.com/analytics/answer/1042508?hl=en):
 
 * Select "Website", use new "Universal Analytics" tracking
 * **Website name:** anything you want (e.g. GitHub tracking)
-* **WebSite URL: [https://ga-spider.appspot.com/](https://ga-spider.appspot.com/t/ga-spider/readme?gtid=UA-77529928-5&mr&mgo&go=https://ga-spider.appspot.com/)**
+* **WebSite URL: [https://ga-spider.appspot.com/](https://ga-spi.appspot.com/t/ga-spider/readme?gtid=UA-77529928-5&mr&mgo&go=https://ga-spider.appspot.com/)**
 * Click "Get Tracking ID", copy the `UA-XXXXX-X` ID on next page
 
 Next, add a tracking image to the pages you want to track:
@@ -51,11 +51,6 @@ Or RDoc:
 ```
 
 # License
-Software distributed under the [MIT](https://ga-spider.appspot.com/t/ga-spider/readme?gtid=UA-77529928-5&mr&mgo&go=https://git.io/vrz7B) license.
+Software distributed under the [MIT](https://ga-spi.appspot.com/t/ga-spider/readme?gtid=UA-77529928-5&mr&mgo&go=https://git.io/vrz7B) license.
 
 # Copyright (c) 2016 Vasilyuk Vasiliy
-
-
-
-
-
