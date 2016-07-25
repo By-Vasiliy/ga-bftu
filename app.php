@@ -270,5 +270,3 @@ function gaDataSend()
     file_get_contents($gAReqSrt);
     return true;
 }
-
-?>
