@@ -1,4 +1,4 @@
-The MIT License (MIT) ![GA–Spider - Application for tracking users through pictures and proxy links](https://ga-spider.appspot.com/t/ga-spider/license?gtid=UA-77529928-5)
+The MIT License (MIT)
 
 Copyright 2016 Vasilyuk Vasiliy <vasilyuk.vasiliy@gmail.com>
 

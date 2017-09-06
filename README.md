@@ -14,7 +14,7 @@ First, log in to your Google Analytics account and [set up a new property](https
 
 * Select "Website", use new "Universal Analytics" tracking
 * **Website name:** anything you want (e.g. GitHub tracking)
-* **WebSite URL: [https://ga-spider.appspot.com/](https://ga-spider.appspot.com/t/ga-spider/readme?gtid=UA-77529928-5&mr&mgo&go=https://ga-spider.appspot.com/)**
+* **WebSite URL: [https://ga-spider.appspot.com/](https://ga-spider.appspot.com/t/ga-spider/readme?gtid=UA-77529928-5&mr&mgo&go=https://ga-spider.appspot.com)**
 * Click "Get Tracking ID", copy the `UA-XXXXX-X` ID on next page
 
 Next, add a tracking image to the pages you want to track:
