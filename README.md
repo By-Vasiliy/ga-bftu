@@ -13,6 +13,7 @@ appcfg.py -A Your_App_Name update .
 ```
 
 ## Using
+
 First, log in to your Google Analytics account and [set up a new property](https://support.google.com/analytics/answer/1042508?hl=en):
 
 * Select "Website", use new "Universal Analytics" tracking
